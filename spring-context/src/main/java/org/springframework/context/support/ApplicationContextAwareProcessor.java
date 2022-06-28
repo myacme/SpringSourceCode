@@ -77,6 +77,9 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 
 	@Override
 	@Nullable
+	/**
+	 * 初始化前的后期处理
+	 */
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 		if (!(bean instanceof EnvironmentAware || bean instanceof EmbeddedValueResolverAware ||
 				bean instanceof ResourceLoaderAware || bean instanceof ApplicationEventPublisherAware ||
@@ -97,6 +100,7 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 			}, acc);
 		}
 		else {
+			//调用aware接口
 			invokeAwareInterfaces(bean);
 		}
 
@@ -120,6 +124,7 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 			((MessageSourceAware) bean).setMessageSource(this.applicationContext);
 		}
 		if (bean instanceof ApplicationContextAware) {
+			//设置applicationContext
 			((ApplicationContextAware) bean).setApplicationContext(this.applicationContext);
 		}
 	}

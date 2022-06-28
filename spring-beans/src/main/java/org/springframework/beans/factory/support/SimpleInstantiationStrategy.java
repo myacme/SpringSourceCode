@@ -57,6 +57,16 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 	}
 
 
+	/**
+	 * 通过反射实例化bean
+	 *
+	 * @param bd       the bean definition
+	 * @param beanName the name of the bean when it is created in this context.
+	 *                 The name can be {@code null} if we are autowiring a bean which doesn't
+	 *                 belong to the factory.
+	 * @param owner    the owning BeanFactory
+	 * @return
+	 */
 	@Override
 	public Object instantiate(RootBeanDefinition bd, @Nullable String beanName, BeanFactory owner) {
 		// Don't override the class with CGLIB if no overrides.
@@ -65,6 +75,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 			synchronized (bd.constructorArgumentLock) {
 				constructorToUse = (Constructor<?>) bd.resolvedConstructorOrFactoryMethod;
 				if (constructorToUse == null) {
+					//反射获取类
 					final Class<?> clazz = bd.getBeanClass();
 					if (clazz.isInterface()) {
 						throw new BeanInstantiationException(clazz, "Specified class is an interface");
@@ -75,6 +86,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 									(PrivilegedExceptionAction<Constructor<?>>) clazz::getDeclaredConstructor);
 						}
 						else {
+							//获取无参构造器
 							constructorToUse = clazz.getDeclaredConstructor();
 						}
 						bd.resolvedConstructorOrFactoryMethod = constructorToUse;
@@ -84,6 +96,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 					}
 				}
 			}
+			//创建bean
 			return BeanUtils.instantiateClass(constructorToUse);
 		}
 		else {

@@ -177,6 +177,9 @@ public abstract class BeanUtils {
 	 * <p>Note that this method tries to set the constructor accessible if given a
 	 * non-accessible (that is, non-public) constructor, and supports Kotlin classes
 	 * with optional parameters and default values.
+	 *
+	 * 使用无参构造器创建对象
+	 *
 	 * @param ctor the constructor to instantiate
 	 * @param args the constructor arguments to apply (use {@code null} for an unspecified
 	 * parameter, Kotlin optional parameters and Java primitive types are supported)
@@ -192,6 +195,7 @@ public abstract class BeanUtils {
 				return KotlinDelegate.instantiateClass(ctor, args);
 			}
 			else {
+				//反射，通过构造器获取类对象
 				Class<?>[] parameterTypes = ctor.getParameterTypes();
 				Assert.isTrue(args.length <= parameterTypes.length, "Can't specify more arguments than constructor parameters");
 				Object[] argsWithDefaultValues = new Object[args.length];
@@ -204,6 +208,7 @@ public abstract class BeanUtils {
 						argsWithDefaultValues[i] = args[i];
 					}
 				}
+				//返回创建的空对象
 				return ctor.newInstance(argsWithDefaultValues);
 			}
 		}
