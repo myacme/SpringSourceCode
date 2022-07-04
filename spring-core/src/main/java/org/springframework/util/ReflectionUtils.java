@@ -33,6 +33,8 @@ import org.springframework.lang.Nullable;
  * Simple utility class for working with the reflection API and handling
  * reflection exceptions.
  *
+ * 用于处理反射API和处理反射异常的简单实用程序类。
+ *
  * <p>Only intended for internal use.
  *
  * @author Juergen Hoeller
